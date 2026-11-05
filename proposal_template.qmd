@@ -1,0 +1,95 @@
+---
+title: "Pricing the market: Predicting E-commerce sales volume using product ratings and price point"
+subtitle: "STAT 330 Portfolio Project Proposal"
+author: "Natalie Ang and Caleb Miramontes"
+format:
+  html:
+    theme: cosmo
+    toc: true
+    code-fold: true
+    code-summary: "Show code"
+    embed-resources: true
+execute:
+  warning: false
+  message: false
+---
+
+
+
+## Question and audience
+
+How do product rating averages and reeview counts predict the total sales volume of e-commerce listings, holding product price and category constant? 
+
+## Data
+
+```{r}
+library(tidyverse)
+
+products <- read_csv("data/olist_products_dataset.csv")
+orders <- read_csv("data/olist_orders_dataset.csv")
+reviews <- read_csv("data/olist_order_reviews_dataset.csv")
+order_items <- read_csv("data/olist_order_items_dataset.csv")
+
+analysis_data <- order_items%>%
+  left_join(products, by = "product_id") %>%
+  left_join(orders, by = "order_id") %>%
+  left_join(reviews, by = "order_id")
+
+```
+
+Data: https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce/code
+Observation Unit: Individual product listing
+Dimension: 113314 x 28
+Response: Total sales volume
+Candidate Predictors: Average Product rating score, Total review count, Listed price and Product category
+Evidence: Having both customer feedback metrics like ratings/reviews and commercial metrics like price and sales allows us to model the preditive relationship.
+Permission: It is a data set offered on a public website called Kaggle.  
+
+## One useful first look
+
+```{r}
+# Create one figure that directly informs your research question.
+# Include a useful title, labels, units, and accessible colors.
+
+product_summary <- order_items%>%
+  group_by(product_id) %>%
+  summarize(
+    total_sales = n(),
+    mean_price = mean(price)
+  ) %>%
+  left_join(products, by = "product_id")
+
+ggplot(product_summary, aes(x= mean_price, y = total_sales)) +
+  geom_point(alpha = 0.4, color = "#2b5c8f") +
+  labs(
+    title = "E- comeerce Sales Volume vs. Product Price",
+    subtitle = "Aggregated by product SKU",
+    x = "Mean Product Price (BRL)",
+    y = "Total Sales Volume"
+  )+
+    theme_minimal()
+
+
+```
+
+This data looks exponential rather than linear. This can cause problems when we run our test. A log transformation is most likely needed to fit the models better. 
+
+## Baseline model
+
+```{r}
+# Fit the baseline and display only the output needed below.
+baseline_model <- lm(total_sales ~ mean_price, data = product_summary)
+summary(baseline_model)
+```
+
+Mean price has a negative direction. For every 1 brazillian real increase is a product's mean price, we expect its total sales volume to decrease by 0.0014 unit holding all else constant. The p-value is low so we'll reject the null hypothesis and conclude that mean rpice has a significant effect on total sales. 
+The one limiation that we have is that the data follows an exponential decay shape so a linear regrssion isn't the best fit unless there is some log transformaton include. 
+
+## Where the analysis could go
+
+1. Log transformation could help the data become more linear if we transform the repsonse variable and predictors as well.
+2. mMltiple linear regression with interaction terms would make the model more spread out and include more predicor within it. 
+
+## AI disclosure and sources
+
+We used AI to help us get the correct code and also to find the data for our questions. it also proof read our explaination to make sure that we had all of the information asked in the questi9on. 
