@@ -16,5 +16,5 @@ How do product rating averages and review counts predict the total sales volume 
 
 ## Project pages
 
-- [Case study](proposal_template.qmd)
-- [AI use](ai-use.qmd)
+- [Case study](proposal_template.html)
+- [AI use](ai-use.html)

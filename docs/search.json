@@ -1,0 +1,107 @@
+[
+  {
+    "objectID": "proposal_template.html",
+    "href": "proposal_template.html",
+    "title": "Pricing the market: Predicting E-commerce sales volume using product ratings and price point",
+    "section": "",
+    "text": "How do product rating averages and reeview counts predict the total sales volume of e-commerce listings, holding product price and category constant?"
+  },
+  {
+    "objectID": "proposal_template.html#question-and-audience",
+    "href": "proposal_template.html#question-and-audience",
+    "title": "Pricing the market: Predicting E-commerce sales volume using product ratings and price point",
+    "section": "",
+    "text": "How do product rating averages and reeview counts predict the total sales volume of e-commerce listings, holding product price and category constant?"
+  },
+  {
+    "objectID": "proposal_template.html#data",
+    "href": "proposal_template.html#data",
+    "title": "Pricing the market: Predicting E-commerce sales volume using product ratings and price point",
+    "section": "Data",
+    "text": "Data\n\n\nShow code\nlibrary(tidyverse)\n\nproducts &lt;- read_csv(\"data/olist_products_dataset.csv\")\norders &lt;- read_csv(\"data/olist_orders_dataset.csv\")\nreviews &lt;- read_csv(\"data/olist_order_reviews_dataset.csv\")\norder_items &lt;- read_csv(\"data/olist_order_items_dataset.csv\")\n\nanalysis_data &lt;- order_items%&gt;%\n  left_join(products, by = \"product_id\") %&gt;%\n  left_join(orders, by = \"order_id\") %&gt;%\n  left_join(reviews, by = \"order_id\")\n\n\nData: https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce/code Observation Unit: Individual product listing Dimension: 113314 x 28 Response: Total sales volume Candidate Predictors: Average Product rating score, Total review count, Listed price and Product category Evidence: Having both customer feedback metrics like ratings/reviews and commercial metrics like price and sales allows us to model the preditive relationship. Permission: It is a data set offered on a public website called Kaggle."
+  },
+  {
+    "objectID": "proposal_template.html#one-useful-first-look",
+    "href": "proposal_template.html#one-useful-first-look",
+    "title": "Pricing the market: Predicting E-commerce sales volume using product ratings and price point",
+    "section": "One useful first look",
+    "text": "One useful first look\n\n\nShow code\n# Create one figure that directly informs your research question.\n# Include a useful title, labels, units, and accessible colors.\n\nproduct_summary &lt;- order_items%&gt;%\n  group_by(product_id) %&gt;%\n  summarize(\n    total_sales = n(),\n    mean_price = mean(price)\n  ) %&gt;%\n  left_join(products, by = \"product_id\")\n\nggplot(product_summary, aes(x= mean_price, y = total_sales)) +\n  geom_point(alpha = 0.4, color = \"#2b5c8f\") +\n  labs(\n    title = \"E- comeerce Sales Volume vs. Product Price\",\n    subtitle = \"Aggregated by product SKU\",\n    x = \"Mean Product Price (BRL)\",\n    y = \"Total Sales Volume\"\n  )+\n    theme_minimal()\n\n\n\n\n\n\n\n\n\nThis data looks exponential rather than linear. This can cause problems when we run our test. A log transformation is most likely needed to fit the models better."
+  },
+  {
+    "objectID": "proposal_template.html#baseline-model",
+    "href": "proposal_template.html#baseline-model",
+    "title": "Pricing the market: Predicting E-commerce sales volume using product ratings and price point",
+    "section": "Baseline model",
+    "text": "Baseline model\n\n\nShow code\n# Fit the baseline and display only the output needed below.\nbaseline_model &lt;- lm(total_sales ~ mean_price, data = product_summary)\nsummary(baseline_model)\n\n\n\nCall:\nlm(formula = total_sales ~ mean_price, data = product_summary)\n\nResiduals:\n   Min     1Q Median     3Q    Max \n -2.62  -2.52  -2.14  -0.54 523.48 \n\nCoefficients:\n              Estimate Std. Error t value Pr(&gt;|t|)    \n(Intercept)  3.6195830  0.0678487  53.348  &lt; 2e-16 ***\nmean_price  -0.0013824  0.0002368  -5.837 5.36e-09 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\nResidual standard error: 10.61 on 32949 degrees of freedom\nMultiple R-squared:  0.001033,  Adjusted R-squared:  0.001003 \nF-statistic: 34.07 on 1 and 32949 DF,  p-value: 5.365e-09\n\n\nMean price has a negative direction. For every 1 brazillian real increase is a product’s mean price, we expect its total sales volume to decrease by 0.0014 unit holding all else constant. The p-value is low so we’ll reject the null hypothesis and conclude that mean rpice has a significant effect on total sales. The one limiation that we have is that the data follows an exponential decay shape so a linear regrssion isn’t the best fit unless there is some log transformaton include."
+  },
+  {
+    "objectID": "proposal_template.html#where-the-analysis-could-go",
+    "href": "proposal_template.html#where-the-analysis-could-go",
+    "title": "Pricing the market: Predicting E-commerce sales volume using product ratings and price point",
+    "section": "Where the analysis could go",
+    "text": "Where the analysis could go\n\nLog transformation could help the data become more linear if we transform the repsonse variable and predictors as well.\nmMltiple linear regression with interaction terms would make the model more spread out and include more predicor within it."
+  },
+  {
+    "objectID": "proposal_template.html#ai-disclosure-and-sources",
+    "href": "proposal_template.html#ai-disclosure-and-sources",
+    "title": "Pricing the market: Predicting E-commerce sales volume using product ratings and price point",
+    "section": "AI disclosure and sources",
+    "text": "AI disclosure and sources\nWe used AI to help us get the correct code and also to find the data for our questions. it also proof read our explaination to make sure that we had all of the information asked in the questi9on."
+  },
+  {
+    "objectID": "ai-use.html",
+    "href": "ai-use.html",
+    "title": "AI-Use",
+    "section": "",
+    "text": "We used AI to help find a dataset, develop R code, and proofread our explanations. We are responsible for checking its suggestions."
+  },
+  {
+    "objectID": "ai-use.html#preliminary-disclosure",
+    "href": "ai-use.html#preliminary-disclosure",
+    "title": "AI-Use",
+    "section": "",
+    "text": "We used AI to help find a dataset, develop R code, and proofread our explanations. We are responsible for checking its suggestions."
+  },
+  {
+    "objectID": "ai-use.html#proposed-extension",
+    "href": "ai-use.html#proposed-extension",
+    "title": "AI-Use",
+    "section": "Proposed extension",
+    "text": "Proposed extension\nWe plan to extend our baseline model by adding average product rating, review count, and product category as predictors of product sales volume. We will also investigate whether a log transformation improves the model."
+  },
+  {
+    "objectID": "ai-use.html#planned-verification-checks",
+    "href": "ai-use.html#planned-verification-checks",
+    "title": "AI-Use",
+    "section": "Planned verification checks",
+    "text": "Planned verification checks\n\nCheck the data joins and product-level summaries for duplicate records or inflated sales counts. Manually compare sales totals, average ratings, and review counts for several products against the original data.\nCheck model diagnostics, including residual plots, to assess linearity and constant variance. Compare the baseline and extended models and verify that our written conclusions match the R output."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Predicting E-commerce Sales Volume",
+    "section": "",
+    "text": "Group members: Natalie Ang and Caleb Miramontes"
+  },
+  {
+    "objectID": "index.html#research-question",
+    "href": "index.html#research-question",
+    "title": "Predicting E-commerce Sales Volume",
+    "section": "Research question",
+    "text": "Research question\nHow do product rating averages and review counts predict the total sales volume of e-commerce listings, holding product price and category constant?"
+  },
+  {
+    "objectID": "index.html#data-sourc",
+    "href": "index.html#data-sourc",
+    "title": "Predicting E-commerce Sales Volume",
+    "section": "Data sourc",
+    "text": "Data sourc\nBrazilian E-Commerce Public Dataset by Olist"
+  },
+  {
+    "objectID": "index.html#project-pages",
+    "href": "index.html#project-pages",
+    "title": "Predicting E-commerce Sales Volume",
+    "section": "Project pages",
+    "text": "Project pages\n\nCase study\nAI use"
+  }
+]
