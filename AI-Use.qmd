@@ -1,0 +1,19 @@
+---
+title: "AI-Use"
+format: html
+editor: visual
+---
+
+## Preliminary disclosure
+
+We used AI to help find a dataset, develop R code, and proofread our explanations. We are responsible for checking its suggestions.
+
+## Proposed extension
+
+We plan to extend our baseline model by adding average product rating, review count, and product category as predictors of product sales volume. We will also investigate whether a log transformation improves the model.
+
+## Planned verification checks
+
+1.  Check the data joins and product-level summaries for duplicate records or inflated sales counts. Manually compare sales totals, average ratings, and review counts for several products against the original data.
+
+2.  Check model diagnostics, including residual plots, to assess linearity and constant variance. Compare the baseline and extended models and verify that our written conclusions match the R output.

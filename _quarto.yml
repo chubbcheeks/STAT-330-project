@@ -1,0 +1,19 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Predicting E-commerce Sales Volume"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: proposal_template.qmd
+        text: Case Study
+      - href: ai-use.qmd
+        text: AI Use
+
+format:
+  html:
+    theme: cosmo
+    toc: true
