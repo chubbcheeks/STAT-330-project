@@ -10,7 +10,7 @@ editor: visual
 
 How do product rating averages and review counts predict the total sales volume of e-commerce listings, holding product price and category constant?
 
-## Data sourc
+## Data source
 
 [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce/data)
 
